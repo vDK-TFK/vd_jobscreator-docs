@@ -1,0 +1,7 @@
+# This repository is documentation only. Never commit the resource source here.
+*.lua
+web/
+*.zip
+*.rar
+.DS_Store
+Thumbs.db

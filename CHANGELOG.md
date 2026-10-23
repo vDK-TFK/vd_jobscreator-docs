@@ -10,6 +10,13 @@ Each entry lists **new config options** and **SQL to run** when there are any. W
 
 ---
 
+## [Unreleased]
+
+### Added
+- `AddSocietyMoney(jobName, amount, reason?)` server export: adds money to the job's primary safe, for scripts with a society/`AddMoneyToSociety` option (see [README](README.md#society-money)).
+
+---
+
 ## [1.0.0] - 2026-10-14
 
 First public release.

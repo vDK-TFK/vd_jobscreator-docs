@@ -19,6 +19,7 @@ The resource itself is sold through Tebex and delivered via the Cfx.re Portal. T
   - [Editing jobs](#editing-jobs)
   - [Editing a player's job](#editing-a-players-job)
   - [Duty](#duty)
+  - [Society money](#society-money)
   - [Error codes](#error-codes)
   - [Data shapes](#data-shapes)
 - [Examples](#examples)
@@ -143,6 +144,29 @@ RegisterCommand('duty', function(src)
     local ok, state = exports['vd_jobscreator']:ToggleDuty(src, info.job)
     if not ok then print('duty failed: ' .. state) end
 end)
+```
+
+### Society money
+
+| Export | Arguments | Returns |
+|---|---|---|
+| `AddSocietyMoney` | `jobName, amount, reason?` | `boolean`: `true` if the money was added |
+
+- Adds `amount` to the job's **primary safe** (the safe marked as primary in the panel). Decimals are rounded to the cent.
+- The safe's capacity limit is **not** applied, so the money is never dropped for being over the limit.
+- Returns `false` if `jobName` is not a string, `amount` is `0` or less, the job doesn't exist, or the job has no primary safe. That last case also writes a warning to the server console.
+- Every deposit is written to the history log and sent to the job's `safe_deposit` Discord webhook, with the calling resource and `reason`. When `reason` is omitted, the calling resource's name is used.
+
+```lua
+local ok = exports['vd_jobscreator']:AddSocietyMoney('sheriff', 125.50, 'fine paid')
+if not ok then print('sheriff has no primary safe') end
+```
+
+To use it with scripts that have a `Config.Society` / `AddMoneyToSociety` option, set it to `'custom'` and call the export there:
+
+```lua
+elseif Config.Society == 'custom' then
+    exports['vd_jobscreator']:AddSocietyMoney(society, money)
 ```
 
 ### Error codes
